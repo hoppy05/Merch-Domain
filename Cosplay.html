@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MD - Costumes & Cosplay Gear</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-main: #0a0a0a;
+      --bg-card: #141414;
+      --accent-pink: #ec4899;
+      --accent-purple: #a855f7;
+      --gradient-primary: linear-gradient(135deg, #ec4899 0%, #a855f7 100%);
+      --text-white: #ffffff;
+      --text-gray: #a1a1aa;
+      --border-color: #27272a;
+      --font-family: 'Poppins', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-family); }
+    body { background-color: var(--bg-main); color: var(--text-white); overflow-x: hidden; padding-bottom: 3rem; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; height: auto; display: block; }
+    .container { width: 90%; max-width: 1200px; margin: 0 auto; }
+    .gradient-text { background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+    header { background-color: rgba(10, 10, 10, 0.95); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px); }
+    .navbar { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; }
+    .logo { font-size: 2.2rem; font-weight: 800; letter-spacing: -1px; }
+    .desktop-nav { display: flex; gap: 2rem; list-style: none; align-items: center; font-weight: 500; }
+    .desktop-nav a:hover, .desktop-nav a.active { color: var(--accent-pink); }
+    .nav-right-actions { display: flex; align-items: center; gap: 1.2rem; }
+    .cart-btn-link { position: relative; background: none; border: none; color: #fff; font-size: 1.4rem; cursor: pointer; }
+    .cart-badge { position: absolute; top: -8px; right: -10px; background: var(--gradient-primary); color: #fff; font-size: 0.75rem; font-weight: 800; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; }
+    .hamburger-trigger { background: none; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; }
+
+    @media (max-width: 768px) { .desktop-nav { display: none; } }
+
+    .full-menu-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #0a0a0a; z-index: 9999; display: flex; flex-direction: column; justify-content: space-between; padding: 1.5rem 5%; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    .full-menu-overlay.active { opacity: 1; pointer-events: auto; }
+    .overlay-header { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+    .overlay-close-btn { background: none; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; }
+    .overlay-links-container { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.2rem; margin: auto 0; list-style: none; }
+    .overlay-links-container a { font-size: 1.4rem; font-weight: 500; }
+    .overlay-links-container a:hover, .overlay-links-container a.active { color: var(--accent-pink); }
+
+    .page-title-section { padding: 3rem 0 1.5rem 0; text-align: center; }
+    .page-title { font-size: 2.5rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 0.5rem; }
+    .section-divider-title { font-size: 1.8rem; font-weight: 800; text-transform: uppercase; border-left: 4px solid var(--accent-pink); padding-left: 1rem; margin: 3rem 0 1.5rem 0; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
+    .card { background-color: var(--bg-card); border-radius: 16px; overflow: hidden; border: 1px solid var(--border-color); display: flex; flex-direction: column; transition: transform 0.3s ease, border-color 0.3s ease; }
+    .card:hover { transform: translateY(-8px); border-color: var(--accent-pink); box-shadow: 0 10px 30px rgba(236, 72, 153, 0.25); }
+    .img-wrap { position: relative; width: 100%; height: 260px; overflow: hidden; background-color: #121212; }
+    .card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .card:hover img { transform: scale(1.08); }
+    .badge { position: absolute; top: 12px; left: 12px; background: var(--gradient-primary); color: #fff; font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.6rem; border-radius: 20px; text-transform: uppercase; }
+    .card-content { padding: 1.25rem; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; }
+    .card-category { font-size: 0.8rem; color: var(--text-gray); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.3rem; }
+    .card-title { font-size: 1.15rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .price { font-size: 1.25rem; font-weight: 700; margin: 0.6rem 0 1rem 0; }
+    .btn { width: 100%; padding: 0.75rem; background: transparent; border: 2px solid transparent; background-image: linear-gradient(var(--bg-card), var(--bg-card)), var(--gradient-primary); background-origin: border-box; background-clip: padding-box, border-box; color: var(--text-white); font-weight: 700; border-radius: 8px; cursor: pointer; transition: all 0.3s ease; text-align: center; }
+    .btn:hover { background: var(--gradient-primary); color: #fff; box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3); }
+
+    footer { padding: 3rem 0; background-color: #050505; text-align: center; color: var(--text-gray); border-top: 1px solid var(--border-color); margin-top: 4rem; }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR HEADER -->
+  <header>
+    <div class="container navbar">
+      <a href="index.html" class="logo gradient-text">MD</a>
+
+      <ul class="desktop-nav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="products.html">All Products</a></li>
+        <li><a href="clothes.html">Streetwear</a></li>
+        <li><a href="cosplay.html" class="active">Costumes</a></li>
+        <li><a href="gta6.html">GTA VI</a></li>
+      </ul>
+
+      <div class="nav-right-actions">
+        <a href="cart.html" class="cart-btn-link" title="Cart">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="cart-badge" id="cartBadgeCount">0</span>
+        </a>
+        <button class="hamburger-trigger" onclick="openMenuOverlay()"><i class="fa-solid fa-bars"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- OVERLAY MENU -->
+  <div class="full-menu-overlay" id="fullMenuOverlay">
+    <div class="overlay-header">
+      <a href="index.html" class="logo gradient-text">MD</a>
+      <button class="overlay-close-btn" onclick="closeMenuOverlay()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <ul class="overlay-links-container">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html">All Products</a></li>
+      <li><a href="clothes.html">Streetwear & Apparel</a></li>
+      <li><a href="cosplay.html" class="active">Costumes & Cosplay</a></li>
+      <li><a href="gta6.html">GTA VI Drop</a></li>
+      <li><a href="playstation5.html">PlayStation 5</a></li>
+      <li><a href="cart.html">Cart</a></li>
+    </ul>
+    <div></div>
+  </div>
+
+  <main class="container">
+    <section class="page-title-section">
+      <h1 class="page-title">COSTUMES & <span class="gradient-text">COSPLAY GEAR</span></h1>
+      <p style="color: var(--text-gray);">Official Outfits, Props, Replicas & Premium Anime Posters</p>
+    </section>
+
+    <!-- 1. OUTFITS & PROPS SECTION -->
+    <h2 class="section-divider-title">Full Outfits & Accessories</h2>
+    <div class="grid">
+
+      <!-- Spiderman Outfit -->
+      <div class="card" id="spiderman">
+        <div class="img-wrap">
+          <span class="badge">BESTSELLER</span>
+          <img src="https://images.unsplash.com/photo-1604200213928-ba3cf4fc8436?auto=format&fit=crop&w=600&q=80" alt="Spiderman Suit">
+        </div>
+        <div class="card-content">
+          <div>
+            <div class="card-category">Marvel Cosplay</div>
+            <div class="card-title">Full Spiderman Bodysuit & Mask</div>
+          </div>
+          <div>
+            <div class="price gradient-text">$89.99</div>
+            <button class="btn" onclick="addToCart('Spiderman Bodysuit & Mask', 89.99, 'https://images.unsplash.com/photo-1604200213928-ba3cf4fc8436?auto=format&fit=crop&w=600&q=80')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Goku Outfit -->
+      <div class="card" id="goku">
+        <div class="img-wrap">
+          <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80" alt="Goku DBZ Outfit">
+        </div>
+        <div class="card-content">
+          <div>
+            <div class="card-category">Dragon Ball Z</div>
+            <div class="card-title">Goku Turtle Hermit Gi Outfit</div>
+          </div>
+          <div>
+            <div class="price gradient-text">$79.99</div>
+            <button class="btn" onclick="addToCart('Goku Turtle Hermit Gi Outfit', 79.99, 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Akatsuki Robe -->
+      <div class="card" id="akatsuki">
+        <div class="img-wrap">
+          <span class="badge">HOT DROP</span>
+          <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=600&q=80" alt="Akatsuki Robe">
+        </div>
+        <div class="card-content">
+          <div>
+            <div class="card-category">Naruto</div>
+            <div class="card-title">Akatsuki Cloud Cloak & Ring Set</div>
+          </div>
+          <div>
+            <div class="price gradient-text">$49.99</div>
+            <button class="btn" onclick="addToCart('Akatsuki Cloud Cloak Set', 49.99, 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=600&q=80')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Thanos Infinity Gauntlet -->
+      <div class="card" id="thanos-gauntlet">
+        <div class="img-wrap">
+          <img src="https://images.unsplash.com/photo-1568832359672-e36cf5d74f54?auto=format&fit=crop&w=600&q=80" alt="Thanos Gauntlet">
+        </div>
+        <div class="card-content">
+          <div>
+            <div class="card-category">Prop Replica</div>
+            <div class="card-title">Thanos Infinity Gauntlet (LED Stones)</div>
+          </div>
+          <div>
+            <div class="price gradient-text">$110.00</div>
+            <button class="btn" onclick="addToCart('Thanos Infinity Gauntlet LED', 110.00, 'https://images.unsplash.com/photo-1568832359672-e36cf5d74f54?auto=format&fit=crop&w=600&q=80')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Naruto Outfit -->
+      <div class="card" id="naruto-outfit">
+        <div class="img-wrap">
+          <img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=600&q=80" alt="Naruto Tracksuit">
+        </div>
+        <div class="card-content">
+          <div>
+            <div class="card-category">Naruto Shippuden</div>
+            <div class="card-title">Naruto Uzumaki Tracksuit Outfit</div>
+          </div>
+          <div>
+            <div class="price gradient-text">$69.99</div>
+            <button class="btn" onclick="addToCart('Naruto Uzumaki Tracksuit', 69.99, 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=600&q=80')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Naruto Headband -->
+      <div class="card" id="naruto-headband">
+        <div class="img-wrap">
+          <img src="https://images.unsplash.com/photo-1535683582419-5d2d4766858e?auto=format&fit=crop&w=600&q=80" alt="Hidden Leaf Headband">
+        </div>
+        <div class="card-content">
+          <div>
+            <div class="card-category">Accessories</div>
+            <div class="card-title">Hidden Leaf Metal Ninja Headband</div>
+          </div>
+          <div>
+            <div class="price gradient-text">$14.99</div>
+            <button class="btn" onclick="addToCart('Hidden Leaf Metal Headband', 14.99, 'https://images.unsplash.com/photo-1535683582419-5d2d4766858e?auto=format&fit=crop&w=600&q=80')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Jujutsu Kaisen Uniform -->
+      <div class="card" id="jjk-uniform">
+        <div class="img-wrap">
+          <img src="https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=600&q=80" alt="JJK Uniform">
+        </div>
+        <div class="card-content">
+          <div>
+            <div class="card-category">Jujutsu Kaisen</div>
+            <div class="card-title">Jujutsu High Uniform (Yuji / Megumi)</div>
+          </div>
+          <div>
+            <div class="price gradient-text">$74.99</div>
+            <button class="btn" onclick="addToCart('Jujutsu High Uniform', 74.99, 'https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=600&q=80')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Toji Fushiguro Outfit -->
+      <div class="card" id="toji-outfit">
+        <div class="img-wrap">
+          <span class="badge">GRAIL</span>
+          <img src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=600&q=80" alt="Toji Outfit">
+        </div>
+        <div class="card-content">
+          <div>
+            <div class="card-category">Jujutsu Kaisen</div>
+            <div class="card-title">Toji Fushiguro Sorcerer Killer Fit</div>
+          </div>
+          <div>
+            <div class="price gradient-text">$65.00</div>
+            <button class="btn" onclick="addToCart('Toji Fushiguro Fit', 65.00, 'https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=600&q=80')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Luffy Outfit -->
+      <div class="card" id="luffy-outfit">
+        <div class="img-wrap">
+          <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=80" alt="Luffy Strawhat Fit">
+        </div>
+        <div class="card-content">
+          <div>
+            <div class="card-category">One Piece</div>
+            <div class="card-title">Luffy Red Vest & Straw Hat Outfit</div>
+          </div>
+          <div>
+            <div class="price gradient-text">$54.99</div>
+            <button class="btn" onclick="addToCart('Luffy Vest & Straw Hat Set', 54.99, 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=80')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Straw Hat Flag -->
+      <div class="card" id="strawhat-flag">
+        <div class="img-wrap">
+          <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80" alt="Jolly Roger Flag">
+        </div>
+        <div class="card-content">
+          <div>
+            <div class="card-category">One Piece</div>
+            <div class="card-title">Straw Hat Pirates Jolly Roger Flag</div>
+          </div>
+          <div>
+            <div class="price gradient-text">$19.99</div>
+            <button class="btn" onclick="addToCart('Straw Hat Jolly Roger Flag', 19.99, 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 2. ANIME POSTERS COLLECTION -->
+    <h2 class="section-divider-title">Wall Art & Canvas Posters</h2>
+    <div class="grid">
+
+      <div class="card" id="poster-naruto-pain">
+        <div class="img-wrap"><img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=600&q=80" alt="Naruto vs Pain"></div>
+        <div class="card-content"><div><div class="card-category">Naruto</div><div class="card-title">Naruto Sage Mode vs Pain Poster</div></div><div><div class="price gradient-text">$18.99</div><button class="btn" onclick="addToCart('Naruto vs Pain Poster', 18.99)">Add to Cart</button></div></div>
+      </div>
+
+      <div class="card" id="poster-madara">
+        <div class="img-wrap"><img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=600&q=80" alt="Madara Uchiha"></div>
+        <div class="card-content"><div><div class="card-category">Naruto</div><div class="card-title">Madara Uchiha Perfect Susanoo Poster</div></div><div><div class="price gradient-text">$18.99</div><button class="btn" onclick="addToCart('Madara Susanoo Poster', 18.99)">Add to Cart</button></div></div>
+      </div>
+
+      <div class="card" id="poster-onepiece">
+        <div class="img-wrap"><img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=600&q=80" alt="One Piece Gear 5"></div>
+        <div class="card-content"><div><div class="card-category">One Piece</div><div class="card-title">Luffy Gear 5 Sun God Nika Poster</div></div><div><div class="price gradient-text">$19.99</div><button class="btn" onclick="addToCart('Gear 5 Nika Poster', 19.99)">Add to Cart</button></div></div>
+      </div>
+
+      <div class="card" id="poster-gojo">
+        <div class="img-wrap"><img src="https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=600&q=80" alt="Gojo Satoru"></div>
+        <div class="card-content"><div><div class="card-category">Jujutsu Kaisen</div><div class="card-title">Satoru Gojo Unlimited Void Poster</div></div><div><div class="price gradient-text">$18.99</div><button class="btn" onclick="addToCart('Gojo Unlimited Void Poster', 18.99)">Add to Cart</button></div></div>
+      </div>
+
+      <div class="card" id="poster-sukuna">
+        <div class="img-wrap"><img src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=600&q=80" alt="Ryomen Sukuna"></div>
+        <div class="card-content"><div><div class="card-category">Jujutsu Kaisen</div><div class="card-title">Ryomen Sukuna Malevolent Shrine Poster</div></div><div><div class="price gradient-text">$18.99</div><button class="btn" onclick="addToCart('Sukuna Malevolent Shrine Poster', 18.99)">Add to Cart</button></div></div>
+      </div>
+
+      <div class="card" id="poster-yuji">
+        <div class="img-wrap"><img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80" alt="Adult Yuji"></div>
+        <div class="card-content"><div><div class="card-category">Jujutsu Kaisen</div><div class="card-title">Awakened Yuji Itadori Black Flash Poster</div></div><div><div class="price gradient-text">$18.99</div><button class="btn" onclick="addToCart('Awakened Yuji Poster', 18.99)">Add to Cart</button></div></div>
+      </div>
+
+      <div class="card" id="poster-hxh">
+        <div class="img-wrap"><img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80" alt="Hunter x Hunter"></div>
+        <div class="card-content"><div><div class="card-category">HxH</div><div class="card-title">Adult Gon vs Pitou Canvas Poster</div></div><div><div class="price gradient-text">$18.99</div><button class="btn" onclick="addToCart('Adult Gon HxH Poster', 18.99)">Add to Cart</button></div></div>
+      </div>
+
+      <div class="card" id="poster-blackclover">
+        <div class="img-wrap"><img src="https://images.unsplash.com/photo-1568832359672-e36cf5d74f54?auto=format&fit=crop&w=600&q=80" alt="Black Clover"></div>
+        <div class="card-content"><div><div class="card-category">Black Clover</div><div class="card-title">Devil Union Asta Metallic Poster</div></div><div><div class="price gradient-text">$18.99</div><button class="btn" onclick="addToCart('Devil Union Asta Poster', 18.99)">Add to Cart</button></div></div>
+      </div>
+
+      <div class="card" id="poster-aot-eren">
+        <div class="img-wrap"><img src="https://images.unsplash.com/photo-1535683582419-5d2d4766858e?auto=format&fit=crop&w=600&q=80" alt="Attack Titan Eren"></div>
+        <div class="card-content"><div><div class="card-category">Attack On Titan</div><div class="card-title">Eren Yeager Attack Titan Form Poster</div></div><div><div class="price gradient-text">$19.99</div><button class="btn" onclick="addToCart('Eren Attack Titan Poster', 19.99)">Add to Cart</button></div></div>
+      </div>
+
+      <div class="card" id="poster-aot-colossal">
+        <div class="img-wrap"><img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=600&q=80" alt="Colossal Titan"></div>
+        <div class="card-content"><div><div class="card-category">Attack On Titan</div><div class="card-title">Colossal Titan Wall Breach Poster</div></div><div><div class="price gradient-text">$19.99</div><button class="btn" onclick="addToCart('Colossal Titan Poster', 19.99)">Add to Cart</button></div></div>
+      </div>
+
+      <div class="card" id="poster-aot-founding">
+        <div class="img-wrap"><img src="https://images.unsplash.com/photo-1604200213928-ba3cf4fc8436?auto=format&fit=crop&w=600&q=80" alt="Founding Titan"></div>
+        <div class="card-content"><div><div class="card-category">Attack On Titan</div><div class="card-title">The Rumbling Founding Titan Poster</div></div><div><div class="price gradient-text">$19.99</div><button class="btn" onclick="addToCart('Founding Titan Rumbling Poster', 19.99)">Add to Cart</button></div></div>
+      </div>
+
+      <div class="card" id="poster-rezero-rem">
+        <div class="img-wrap"><img src="https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=600&q=80" alt="ReZero Rem"></div>
+        <div class="card-content"><div><div class="card-category">Re:Zero</div><div class="card-title">Rem Demon Form Aesthetics Poster</div></div><div><div class="price gradient-text">$17.99</div><button class="btn" onclick="addToCart('ReZero Rem Poster', 17.99)">Add to Cart</button></div></div>
+      </div>
+
+      <div class="card" id="poster-rezero-subaru">
+        <div class="img-wrap"><img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80" alt="ReZero Subaru"></div>
+        <div class="card-content"><div><div class="card-category">Re:Zero</div><div class="card-title">Subaru Natsuki Return by Death Poster</div></div><div><div class="price gradient-text">$17.99</div><button class="btn" onclick="addToCart('Subaru Return by Death Poster', 17.99)">Add to Cart</button></div></div>
+      </div>
+
+      <div class="card" id="poster-kokushibo">
+        <div class="img-wrap"><img src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=600&q=80" alt="Kokushibo Upper Moon One"></div>
+        <div class="card-content"><div><div class="card-category">Demon Slayer</div><div class="card-title">Kokushibo Upper Moon One Poster</div></div><div><div class="price gradient-text">$19.99</div><button class="btn" onclick="addToCart('Kokushibo Upper Moon 1 Poster', 19.99)">Add to Cart</button></div></div>
+      </div>
+
+      <div class="card" id="poster-akaza">
+        <div class="img-wrap"><img src="https://images.unsplash.com/photo-1563089145-599997674d42?auto=format&fit=crop&w=600&q=80" alt="Akaza Upper Moon Three"></div>
+        <div class="card-content"><div><div class="card-category">Demon Slayer</div><div class="card-title">Akaza Compass Needle Upper 3 Poster</div></div><div><div class="price gradient-text">$18.99</div><button class="btn" onclick="addToCart('Akaza Upper 3 Poster', 18.99)">Add to Cart</button></div></div>
+      </div>
+
+      <div class="card" id="poster-muzan">
+        <div class="img-wrap"><img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=600&q=80" alt="Muzan Final Form"></div>
+        <div class="card-content"><div><div class="card-category">Demon Slayer</div><div class="card-title">Muzan Kibutsuji Final Demon Form Poster</div></div><div><div class="price gradient-text">$19.99</div><button class="btn" onclick="addToCart('Muzan Final Form Poster', 19.99)">Add to Cart</button></div></div>
+      </div>
+
+      <div class="card" id="poster-tanjiro-demon">
+        <div class="img-wrap"><img src="https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=600&q=80" alt="Demon King Tanjiro"></div>
+        <div class="card-content"><div><div class="card-category">Demon Slayer</div><div class="card-title">Demon King Tanjiro Awakened Poster</div></div><div><div class="price gradient-text">$19.99</div><button class="btn" onclick="addToCart('Demon King Tanjiro Poster', 19.99)">Add to Cart</button></div></div>
+      </div>
+
+      <div class="card" id="poster-yoriichi">
+        <div class="img-wrap"><img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=600&q=80" alt="Yoriichi Tsugikuni"></div>
+        <div class="card-content"><div><div class="card-category">Demon Slayer</div><div class="card-title">Yoriichi Tsugikuni Sun Breathing Poster</div></div><div><div class="price gradient-text">$19.99</div><button class="btn" onclick="addToCart('Yoriichi Sun Breathing Poster', 19.99)">Add to Cart</button></div></div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="gradient-text" style="font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem;">MD</div>
+    <p>&copy; 2026 MD Merchandise & Cosplay Store.</p>
+  </footer>
+
+  <script>
+    const overlay = document.getElementById('fullMenuOverlay');
+    function openMenuOverlay() { if(overlay) overlay.classList.add('active'); }
+    function closeMenuOverlay() { if(overlay) overlay.classList.remove('active'); }
+
+    function addToCart(name, price, image) {
+      let cart = JSON.parse(localStorage.getItem('md_cart') || '[]');
+      cart.push({ name, price, image: image || 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=600&q=80', id: Date.now() });
+      localStorage.setItem('md_cart', JSON.stringify(cart));
+      updateCartBadge();
+      alert(`Added "${name}" to your cart!`);
+    }
+
+    function updateCartBadge() {
+      let cart = JSON.parse(localStorage.getItem('md_cart') || '[]');
+      const badge = document.getElementById('cartBadgeCount');
+      if (badge) badge.textContent = cart.length;
+    }
+    window.onload = updateCartBadge;
+  </script>
+</body>
+</html>

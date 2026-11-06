@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MD - All Products</title>
+  <!-- Google Fonts & FontAwesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* ==========================================
+       1. CORE RESET & THEME VARIABLES
+       ========================================== */
+    :root {
+      --bg-main: #0a0a0a;
+      --bg-card: #141414;
+      --accent-pink: #ec4899;
+      --accent-purple: #a855f7;
+      --gradient-primary: linear-gradient(135deg, #ec4899 0%, #a855f7 100%);
+      --gradient-hover: linear-gradient(135deg, #db2777 0%, #9333ea 100%);
+      --text-white: #ffffff;
+      --text-gray: #a1a1aa;
+      --border-color: #27272a;
+      --font-family: 'Poppins', sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: var(--font-family);
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-white);
+      line-height: 1.6;
+      overflow-x: hidden;
+      padding-bottom: 3rem;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .gradient-text {
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* ==========================================
+       2. HEADER & NAVBAR
+       ========================================== */
+    header {
+      background-color: rgba(10, 10, 10, 0.95);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+
+    .logo {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .desktop-nav {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .desktop-nav a {
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .desktop-nav a:hover, .desktop-nav a.active {
+      color: var(--accent-pink);
+    }
+
+    .nav-right-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .cart-btn-link {
+      position: relative;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: -8px;
+      right: -10px;
+      background: var(--gradient-primary);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 800;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hamburger-trigger {
+      display: none;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.8rem;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .desktop-nav {
+        display: none;
+      }
+      .hamburger-trigger {
+        display: block;
+      }
+    }
+
+    /* ==========================================
+       3. EXACT FULL-SCREEN OVERLAY MENU
+       ========================================== */
+    .full-menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #0a0a0a;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1.5rem 5%;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    .full-menu-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .overlay-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .overlay-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .overlay-search-btn {
+      background: var(--gradient-primary);
+      color: #ffffff;
+      border: none;
+      padding: 0.55rem 1.2rem;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+    }
+
+    .overlay-close-btn {
+      background: none;
+      border: none;
+      color: #ffffff;
+      font-size: 1.8rem;
+      cursor: pointer;
+      padding: 0.2rem;
+    }
+
+    .overlay-links-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.2rem;
+      margin: auto 0;
+      list-style: none;
+    }
+
+    .overlay-links-container a {
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: #ffffff;
+      transition: color 0.3s ease;
+    }
+
+    .overlay-links-container a:hover, .overlay-links-container a.active {
+      color: var(--accent-pink);
+    }
+
+    /* ==========================================
+       4. PAGE CONTENT & FILTER BAR
+       ========================================== */
+    .page-title-section {
+      padding: 3rem 0 1.5rem 0;
+      text-align: center;
+    }
+
+    .page-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 0.5rem;
+    }
+
+    .page-subtitle {
+      color: var(--text-gray);
+      font-size: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .filter-box {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.2rem;
+    }
+
+    .filter-box input, .filter-box select {
+      padding: 0.8rem 1.2rem;
+      background-color: #0a0a0a;
+      border: 1px solid var(--border-color);
+      color: #fff;
+      border-radius: 30px;
+      outline: none;
+      font-size: 0.95rem;
+    }
+
+    .filter-box input {
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .filter-box input:focus, .filter-box select:focus {
+      border-color: var(--accent-pink);
+    }
+
+    /* ==========================================
+       5. PRODUCTS GRID (10 UNIQUE ITEMS)
+       ========================================== */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .card {
+      background-color: var(--bg-card);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      border-color: var(--accent-pink);
+      box-shadow: 0 10px 30px rgba(236, 72, 153, 0.25);
+    }
+
+    .img-wrap {
+      position: relative;
+      width: 100%;
+      height: 240px;
+      overflow: hidden;
+      background-color: #121212;
+    }
+
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .card:hover img {
+      transform: scale(1.08);
+    }
+
+    .badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: var(--gradient-primary);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.25rem 0.6rem;
+      border-radius: 20px;
+      text-transform: uppercase;
+    }
+
+    .card-content {
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      justify-content: space-between;
+    }
+
+    .card-category {
+      font-size: 0.8rem;
+      color: var(--text-gray);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.3rem;
+    }
+
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+
+    .price {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin: 0.6rem 0 1rem 0;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 0.75rem;
+      background: transparent;
+      border: 2px solid transparent;
+      background-image: linear-gradient(var(--bg-card), var(--bg-card)), var(--gradient-primary);
+      background-origin: border-box;
+      background-clip: padding-box, border-box;
+      color: var(--text-white);
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .btn:hover {
+      background: var(--gradient-primary);
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+    }
+
+    footer {
+      padding: 3rem 0;
+      background-color: #050505;
+      text-align: center;
+      color: var(--text-gray);
+      border-top: 1px solid var(--border-color);
+      margin-top: 4rem;
+    }
+
+    .footer-logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR HEADER -->
+  <header>
+    <div class="container navbar">
+      <a href="index.html" class="logo gradient-text">MD</a>
+
+      <ul class="desktop-nav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="products.html" class="active">Products</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="blogs.html">Blogs</a></li>
+      </ul>
+
+      <div class="nav-right-actions">
+        <a href="cart.html" class="cart-btn-link" title="Cart">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="cart-badge" id="cartBadgeCount">0</span>
+        </a>
+
+        <button class="hamburger-trigger" onclick="openMenuOverlay()">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- FULL-SCREEN OVERLAY MENU -->
+  <div class="full-menu-overlay" id="fullMenuOverlay">
+    <div class="overlay-header">
+      <a href="index.html" class="logo gradient-text">MD</a>
+
+      <div class="overlay-controls">
+        <button class="overlay-search-btn" onclick="focusSearchAndClose()">
+          <i class="fa-solid fa-magnifying-glass"></i> Search
+        </button>
+        <button class="overlay-close-btn" onclick="closeMenuOverlay()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+    </div>
+
+    <ul class="overlay-links-container">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html" class="active">Products</a></li>
+      <li><a href="index.html#about" onclick="closeMenuOverlay()">About</a></li>
+      <li><a href="Blog.html">Blogs</a></li>
+    </ul>
+
+    <div></div>
+  </div>
+
+  <main class="container">
+    <section class="page-title-section">
+      <h1 class="page-title">ALL <span class="gradient-text">PRODUCTS</span></h1>
+      <p class="page-subtitle">10 Exclusive Drops: Gaming, Tech, Streetwear, Fragrance & Cosplay</p>
+    </section>
+
+    <!-- SEARCH & CATEGORY FILTER BAR -->
+    <div class="filter-box">
+      <input type="text" id="searchInput" placeholder="Search GTA 6, PS5, Oud Perfume, Cosplay..." oninput="applyFilters()">
+      <select id="catSelect" onchange="applyFilters()">
+        <option value="all">All Categories</option>
+        <option value="gaming">Gaming & Tech</option>
+        <option value="fragrance">Fragrance</option>
+        <option value="jewelry">Jewellery</option>
+        <option value="clothing">Streetwear</option>
+        <option value="cosplay">Cosplay Gear</option>
+      </select>
+    </div>
+
+    <!-- 10 UNIQUE PRODUCTS GRID -->
+    <div class="grid" id="productGrid">
+
+      <!-- Item 1: GTA VI Official Cover Art -->
+      <div class="card" data-cat="gaming" data-name="gta 6 grand theft auto vi game ps5 xbox rockstar">
+        <div class="img-wrap">
+          <span class="badge">#1 PRE-ORDER</span>
+          <img src="gta6fan.jpg" alt="GTA VI Cover Art">
+        </div>
+        <div class="card-content">
+          <div>
+            <div class="card-category">Gaming</div>
+            <div class="card-title">GTA VI (Collector's Edition)</div>
+          </div>
+          <div>
+            <div class="price gradient-text">$89.99</div>
+            <button class="btn" onclick="addToCart('GTA VI (Collector Edition)', 89.99, 'https://upload.wikimedia.org/wikipedia/en/a/a5/Grand_Theft_Auto_VI_cover_art.jpg')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 2: PS5 Console -->
+      <div class="card" data-cat="gaming" data-name="playstation 5 ps5 console dualsense sony controller">
+        <div class="img-wrap">
+          <span class="badge">HOT DROP</span>
+          <img src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=600&q=80" alt="PS5 Console">
+        </div>
+        <div class="card-content">
+          <div>
+            <div class="card-category">Gaming</div>
+            <div class="card-title">PlayStation 5 Console</div>
+          </div>
+          <div>
+            <div class="price gradient-text">$499.99</div>
+            <button class="btn" onclick="addToCart('PlayStation 5 Console', 499.99, 'https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=600&q=80')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 3: Flagship Smartphone -->
+      <div class="card" data-cat="gaming" data-name="smartphone phone mobile iphone galaxy apex">
+        <div class="img-wrap">
+          <img src="iphones.jpg" alt="Iphone Pro Smartphone">
+        </div>
+        <div class="card-content">
+          <div>
+            <div class="card-category">Tech</div>
+            <div class="card-title">IPhone 17 pro max</div>
+          </div>
+          <div>
+            <div class="price gradient-text">$999.00</div>
+            <button class="btn" onclick="addToCart('Apex Pro Phone', 999.00, 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+            <!-- Item 4: Oud Royale Cologne -->
+      <div class="card" data-cat="fragrance" data-name="perfume cologne fragrance scent men oud royale">
+        <div class="img-wrap">
+          <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80" alt="Oud Royale Cologne">
+        </div>
+        <div class="card-content">
+          <div>
+            <div class="card-category">Fragrance</div>
+            <div class="card-title">Oud Royale Cologne</div>
+          </div>
+          <div>
+            <div class="price gradient-text">$75.00</div>
+            <button class="btn" onclick="addToCart('Oud Royale Cologne', 75.00, 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 5: Velvet Rose Parfum -->
+      <div class="card" data-cat="fragrance" data-name="women perfume floral scent fragrance rose velvet">
+        <div class="img-wrap">
+          <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=600&q=80" alt="Velvet Rose Parfum">
+        </div>
+        <div class="card-content">
+          <div>
+            <div class="card-category">Fragrance</div>
+            <div class="card-title">Velvet Rose Eau De Parfum</div>
+          </div>
+          <div>
+            <div class="price gradient-text">$65.00</div>
+            <button class="btn" onclick="addToCart('Velvet Rose Parfum', 65.00, 'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=600&q=80')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 6: Gold Cuban Chain -->
+      <div class="card" data-cat="jewelry" data-name="jewellery jewelry gold cuban link chain necklace">
+        <div class="img-wrap">
+          <img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80" alt="Gold Cuban Link Chain">
+        </div>
+        <div class="card-content">
+          <div>
+            <div class="card-category">Jewellery</div>
+            <div class="card-title">Gold Cuban Link Chain</div>
+          </div>
+          <div>
+            <div class="price gradient-text">$120.00</div>
+            <button class="btn" onclick="addToCart('Gold Cuban Chain', 120.00, 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 7: Full Cosplay Suit -->
+      <div class="card" data-cat="cosplay" data-name="cosplay gear suit anime costume mask armor">
+        <div class="img-wrap">
+          <span class="badge">EXCLUSIVE</span>
+          <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=600&q=80" alt="Cosplay Armor Suit">
+        </div>
+        <div class="card-content">
+          <div>
+            <div class="card-category">Cosplay</div>
+            <div class="card-title">Full Cosplay Armor Suit</div>
+          </div>
+          <div>
+            <div class="price gradient-text">$149.99</div>
+            <button class="btn" onclick="addToCart('Full Cosplay Armor Suit', 149.99, 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=600&q=80')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 8: MD Oversized Hoodie -->
+      <div class="card" data-cat="clothing" data-name="hoodie merch sweater streetwear oversized black md">
+        <div class="img-wrap">
+          <img src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=600&q=80" alt="MD Oversized Hoodie">
+        </div>
+        <div class="card-content">
+          <div>
+            <div class="card-category">Streetwear</div>
+            <div class="card-title">MD Oversized Merch Hoodie</div>
+          </div>
+          <div>
+            <div class="price gradient-text">$69.99</div>
+            <button class="btn" onclick="addToCart('MD Oversized Hoodie', 69.99, 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=600&q=80')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 9: Vintage Baggy Jeans -->
+      <div class="card" data-cat="clothing" data-name="baggy jeans denim pants streetwear oversized vintage">
+        <div class="img-wrap">
+          <img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=600&q=80" alt="Vintage Baggy Jeans">
+        </div>
+        <div class="card-content">
+          <div>
+            <div class="card-category">Streetwear</div>
+            <div class="card-title">Vintage Baggy Denim Jeans</div>
+          </div>
+          <div>
+            <div class="price gradient-text">$59.99</div>
+            <button class="btn" onclick="addToCart('Vintage Baggy Jeans', 59.99, 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=600&q=80')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Item 10: Cyber Snapback Cap -->
+      <div class="card" data-cat="clothing" data-name="cap snapback hat headwear grey accessories md">
+        <div class="img-wrap">
+          <img src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&w=600&q=80" alt="MD Cyber Snapback Cap">
+        </div>
+        <div class="card-content">
+          <div>
+            <div class="card-category">Headwear</div>
+            <div class="card-title">MD Cyber Snapback Cap</div>
+          </div>
+          <div>
+            <div class="price gradient-text">$24.99</div>
+            <button class="btn" onclick="addToCart('MD Cyber Snapback', 24.99, 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&w=600&q=80')">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-logo gradient-text">MD</div>
+    <p>&copy; 2026 MD Merchandise & Tech Store. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // 1. FULL-SCREEN MENU OVERLAY ENGINE
+    const overlay = document.getElementById('fullMenuOverlay');
+
+    function openMenuOverlay() {
+      if (overlay) overlay.classList.add('active');
+    }
+
+    function closeMenuOverlay() {
+      if (overlay) overlay.classList.remove('active');
+    }
+
+    function focusSearchAndClose() {
+      closeMenuOverlay();
+      const input = document.getElementById('searchInput');
+      if (input) {
+        input.focus();
+        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    // 2. REAL-TIME FILTERING ENGINE
+    function applyFilters() {
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+      const cat = document.getElementById('catSelect').value;
+      const cards = document.querySelectorAll('.card');
+
+      cards.forEach(card => {
+        const name = card.getAttribute('data-name');
+        const cardCat = card.getAttribute('data-cat');
+        const matchSearch = name.includes(query);
+        const matchCat = (cat === 'all' || cardCat === cat);
+
+        card.style.display = (matchSearch && matchCat) ? 'flex' : 'none';
+      });
+    }
+
+    // 3. CART SYSTEM (LOCALSTORAGE)
+    function addToCart(name, price, image) {
+      let cart = JSON.parse(localStorage.getItem('md_cart') || '[]');
+      cart.push({ name, price, image, id: Date.now() });
+      localStorage.setItem('md_cart', JSON.stringify(cart));
+      updateCartBadge();
+      alert(`Added "${name}" to your cart!`);
+    }
+
+    function updateCartBadge() {
+      let cart = JSON.parse(localStorage.getItem('md_cart') || '[]');
+      const badge = document.getElementById('cartBadgeCount');
+      if (badge) {
+        badge.textContent = cart.length;
+      }
+    }
+
+    // 4. ON LOAD LOGIC
+    window.onload = function() {
+      updateCartBadge();
+      const params = new URLSearchParams(window.location.search);
+      const search = params.get('search');
+      if (search) {
+        document.getElementById('searchInput').value = decodeURIComponent(search);
+        applyFilters();
+      }
+    };
+  </script>
+</body>
+</html>

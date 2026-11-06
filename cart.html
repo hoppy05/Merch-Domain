@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MD - Shopping Cart</title>
+  <!-- Google Fonts & FontAwesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* ==========================================
+       1. CORE RESET & THEME VARIABLES
+       ========================================== */
+    :root {
+      --bg-main: #0a0a0a;
+      --bg-card: #141414;
+      --accent-pink: #ec4899;
+      --accent-purple: #a855f7;
+      --gradient-primary: linear-gradient(135deg, #ec4899 0%, #a855f7 100%);
+      --text-white: #ffffff;
+      --text-gray: #a1a1aa;
+      --border-color: #27272a;
+      --font-family: 'Poppins', sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: var(--font-family);
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-white);
+      line-height: 1.6;
+      overflow-x: hidden;
+      padding-bottom: 3rem;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .gradient-text {
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* ==========================================
+       2. HEADER & NAVBAR
+       ========================================== */
+    header {
+      background-color: rgba(10, 10, 10, 0.95);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+
+    .logo {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+    .desktop-nav {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .desktop-nav a {
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .desktop-nav a:hover, .desktop-nav a.active {
+      color: var(--accent-pink);
+    }
+
+    .nav-right-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .cart-btn-link {
+      position: relative;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: -8px;
+      right: -10px;
+      background: var(--gradient-primary);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 800;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hamburger-trigger {
+      display: none;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.8rem;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .desktop-nav {
+        display: none;
+      }
+      .hamburger-trigger {
+        display: block;
+      }
+    }
+
+    /* ==========================================
+       3. FULL-SCREEN OVERLAY MENU
+       ========================================== */
+    .full-menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #0a0a0a;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 1.5rem 5%;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease-in-out;
+    }
+
+    .full-menu-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .overlay-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .overlay-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .overlay-close-btn {
+      background: none;
+      border: none;
+      color: #ffffff;
+      font-size: 1.8rem;
+      cursor: pointer;
+      padding: 0.2rem;
+    }
+
+    .overlay-links-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2.2rem;
+      margin: auto 0;
+      list-style: none;
+    }
+
+    .overlay-links-container a {
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: #ffffff;
+      transition: color 0.3s ease;
+    }
+
+    .overlay-links-container a:hover, .overlay-links-container a.active {
+      color: var(--accent-pink);
+    }
+
+    /* ==========================================
+       4. CART PAGE LAYOUT
+       ========================================== */
+    .page-title-section {
+      padding: 3rem 0 1.5rem 0;
+      text-align: center;
+    }
+
+    .page-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 0.5rem;
+    }
+
+    .cart-layout {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 900px) {
+      .cart-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .cart-items-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .cart-item-card {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .cart-item-img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 8px;
+      background-color: #1a1a1a;
+    }
+
+    .cart-item-details {
+      flex-grow: 1;
+    }
+
+    .cart-item-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+
+    .cart-item-price {
+      font-weight: 700;
+      color: var(--accent-pink);
+    }
+
+    .remove-btn {
+      background: none;
+      border: none;
+      color: var(--text-gray);
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: color 0.2s;
+      padding: 0.5rem;
+    }
+
+    .remove-btn:hover {
+      color: #ef4444;
+    }
+
+    .cart-summary-box {
+      background-color: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 1.5rem;
+      height: fit-content;
+    }
+
+    .summary-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 1.2rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.8rem;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      font-size: 1.05rem;
+    }
+
+    .summary-total {
+      font-size: 1.3rem;
+      font-weight: 800;
+      border-top: 1px solid var(--border-color);
+      padding-top: 1rem;
+      margin-top: 1rem;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      padding: 0.9rem;
+      background: var(--gradient-primary);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 1.5rem;
+      box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
+      transition: opacity 0.2s;
+    }
+
+    .checkout-btn:hover {
+      opacity: 0.9;
+    }
+
+    .empty-cart-msg {
+      text-align: center;
+      color: var(--text-gray);
+      padding: 3rem 0;
+      font-size: 1.1rem;
+    }
+
+    footer {
+      padding: 3rem 0;
+      background-color: #050505;
+      text-align: center;
+      color: var(--text-gray);
+      border-top: 1px solid var(--border-color);
+      margin-top: 4rem;
+    }
+
+    .footer-logo {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR HEADER -->
+  <header>
+    <div class="container navbar">
+      <a href="index.html" class="logo gradient-text">MD</a>
+
+      <ul class="desktop-nav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="products.html">Products</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="blogs.html">Blogs</a></li>
+      </ul>
+
+      <div class="nav-right-actions">
+        <a href="cart.html" class="cart-btn-link active" title="Cart">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="cart-badge" id="cartBadgeCount">0</span>
+        </a>
+
+        <button class="hamburger-trigger" onclick="openMenuOverlay()">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- FULL-SCREEN OVERLAY MENU -->
+  <div class="full-menu-overlay" id="fullMenuOverlay">
+    <div class="overlay-header">
+      <a href="index.html" class="logo gradient-text">MD</a>
+
+      <div class="overlay-controls">
+        <button class="overlay-close-btn" onclick="closeMenuOverlay()">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+    </div>
+
+    <ul class="overlay-links-container">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="products.html">Products</a></li>
+      <li><a href="index.html#about" onclick="closeMenuOverlay()">About</a></li>
+      <li><a href="blogs.html">Blogs</a></li>
+    </ul>
+
+    <div></div>
+  </div>
+
+  <main class="container">
+    <section class="page-title-section">
+      <h1 class="page-title">YOUR <span class="gradient-text">CART</span></h1>
+    </section>
+
+    <div class="cart-layout">
+      <!-- Cart Items List -->
+      <div class="cart-items-container" id="cartItemsContainer">
+        <!-- Dynamically injected via JS -->
+      </div>
+
+      <!-- Order Summary Box -->
+      <div class="cart-summary-box">
+        <div class="summary-title">Order Summary</div>
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span id="cartSubtotal">$0.00</span>
+        </div>
+        <div class="summary-row">
+          <span>Shipping</span>
+          <span style="color: var(--accent-pink)">Calculated via WhatsApp</span>
+        </div>
+        <div class="summary-row summary-total">
+          <span>Total</span>
+          <span id="cartTotal" class="gradient-text">$0.00</span>
+        </div>
+        <button class="checkout-btn" onclick="checkoutViaWhatsApp()">Proceed to WhatsApp Order</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-logo gradient-text">MD</div>
+    <p>&copy; 2026 MD Merchandise & Tech Store. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // 1. FULL-SCREEN MENU OVERLAY ENGINE
+    const overlay = document.getElementById('fullMenuOverlay');
+
+    function openMenuOverlay() {
+      if (overlay) overlay.classList.add('active');
+    }
+
+    function closeMenuOverlay() {
+      if (overlay) overlay.classList.remove('active');
+    }
+
+    // 2. RENDER CART ITEMS FROM LOCALSTORAGE
+    function renderCart() {
+      let cart = JSON.parse(localStorage.getItem('md_cart') || '[]');
+      const container = document.getElementById('cartItemsContainer');
+      const badge = document.getElementById('cartBadgeCount');
+      const subtotalEl = document.getElementById('cartSubtotal');
+      const totalEl = document.getElementById('cartTotal');
+
+      if (badge) badge.textContent = cart.length;
+
+      if (cart.length === 0) {
+        container.innerHTML = `<div class="empty-cart-msg">Your cart is currently empty. <br><a href="products.html" style="color: var(--accent-pink); text-decoration: underline; margin-top: 1rem; display:inline-block;">Browse Products</a></div>`;
+        subtotalEl.textContent = '$0.00';
+        totalEl.textContent = '$0.00';
+        return;
+      }
+
+      let html = '';
+      let subtotal = 0;
+
+      cart.forEach((item, index) => {
+        subtotal += item.price;
+        html += `
+          <div class="cart-item-card">
+            <img src="${item.image || 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=200&q=80'}" alt="${item.name}" class="cart-item-img">
+            <div class="cart-item-details">
+              <div class="cart-item-title">${item.name}</div>
+              <div class="cart-item-price">$${item.price.toFixed(2)}</div>
+            </div>
+            <button class="remove-btn" onclick="removeItem(${index})" title="Remove Item"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+      subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+      totalEl.textContent = `$${subtotal.toFixed(2)}`;
+    }
+
+    // 3. REMOVE SINGLE ITEM
+    function removeItem(index) {
+      let cart = JSON.parse(localStorage.getItem('md_cart') || '[]');
+      cart.splice(index, 1);
+      localStorage.setItem('md_cart', JSON.stringify(cart));
+      renderCart();
+    }
+
+    // 4. WHATSAPP CHECKOUT INTEGRATION
+    function checkoutViaWhatsApp() {
+      let cart = JSON.parse(localStorage.getItem('md_cart') || '[]');
+      if (cart.length === 0) {
+        alert('Your cart is empty!');
+        return;
+      }
+
+      let message = "Hello! I would like to place an order from MD:\n\n";
+      let total = 0;
+
+      cart.forEach((item, index) => {
+        message += `${index + 1}. ${item.name} - $${item.price.toFixed(2)}\n`;
+        total += item.price;
+      });
+
+      message += `\nTotal: $${total.toFixed(2)}`;
+      
+      // Botswana WhatsApp contact number placeholder
+      const phoneNumber = "26770000000"; 
+      const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+      
+      window.open(url, '_blank');
+    }
+
+    // Initialize cart on load
+    window.onload = renderCart;
+  </script>
+</body>
+</html>

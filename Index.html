@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MD - The Home of Merchandise</title>
+  <!-- Google Fonts & FontAwesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* ==========================================
+       1. CORE RESET & THEME VARIABLES
+       ========================================== */
+    :root {
+      --bg-main: #0a0a0a;
+      --bg-card: #141414;
+      --accent-pink: #ec4899;
+      --accent-purple: #a855f7;
+      --gradient-primary: linear-gradient(135deg, #ec4899 0%, #a855f7 100%);
+      --text-white: #ffffff;
+      --text-gray: #a1a1aa;
+      --border-color: #27272a;
+      --font-family: 'Poppins', sans-serif;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-family); }
+    body { background-color: var(--bg-main); color: var(--text-white); overflow-x: hidden; padding-bottom: 3rem; }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; height: auto; display: block; }
+    .container { width: 90%; max-width: 1200px; margin: 0 auto; }
+    .gradient-text { background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+    /* ==========================================
+       2. HEADER & NAVBAR
+       ========================================== */
+    header { background-color: rgba(10, 10, 10, 0.95); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px); }
+    .navbar { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; }
+    .logo { font-size: 2.2rem; font-weight: 800; letter-spacing: -1px; }
+    .desktop-nav { display: flex; gap: 2rem; list-style: none; align-items: center; font-weight: 500; }
+    .desktop-nav a:hover, .desktop-nav a.active { color: var(--accent-pink); }
+    .nav-right-actions { display: flex; align-items: center; gap: 1.2rem; }
+    .cart-btn-link { position: relative; background: none; border: none; color: #fff; font-size: 1.4rem; cursor: pointer; }
+    .cart-badge { position: absolute; top: -8px; right: -10px; background: var(--gradient-primary); color: #fff; font-size: 0.75rem; font-weight: 800; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; }
+    .hamburger-trigger, .search-trigger-btn { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+    .search-trigger-btn { background: var(--gradient-primary); padding: 0.45rem 1.1rem; border-radius: 30px; font-size: 0.9rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 15px rgba(236,72,153,0.3); }
+
+    @media (max-width: 768px) { .desktop-nav { display: none; } }
+
+    /* ==========================================
+       3. FULL-SCREEN OVERLAY MENU
+       ========================================== */
+    .full-menu-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #0a0a0a; z-index: 9999; display: flex; flex-direction: column; justify-content: space-between; padding: 1.5rem 5%; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+    .full-menu-overlay.active { opacity: 1; pointer-events: auto; }
+    .overlay-header { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+    .overlay-close-btn { background: none; border: none; color: #fff; font-size: 1.8rem; cursor: pointer; }
+    .overlay-links-container { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2.2rem; margin: auto 0; list-style: none; }
+    .overlay-links-container a { font-size: 1.4rem; font-weight: 500; }
+    .overlay-links-container a:hover, .overlay-links-container a.active { color: var(--accent-pink); }
+
+    /* ==========================================
+       4. GOOGLE-STYLE SEARCH MODAL
+       ========================================== */
+    .search-modal { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.92); z-index: 10000; display: none; flex-direction: column; padding: 2rem 5%; backdrop-filter: blur(12px); }
+    .search-modal.active { display: flex; }
+    .search-bar-wrap { display: flex; align-items: center; background: #18181b; border: 2px solid var(--accent-pink); border-radius: 40px; padding: 0.8rem 1.5rem; width: 100%; max-width: 700px; margin: 2rem auto; box-shadow: 0 0 25px rgba(236,72,153,0.3); }
+    .search-bar-wrap input { background: none; border: none; color: #fff; font-size: 1.1rem; width: 100%; outline: none; margin-left: 1rem; }
+    .search-results-box { max-width: 700px; width: 100%; margin: 0 auto; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; overflow-y: auto; max-height: 60vh; }
+    .search-suggestion-item { padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); cursor: pointer; transition: background 0.2s; }
+    .search-suggestion-item:hover { background: #222226; }
+    .suggestion-category { font-size: 0.75rem; background: var(--gradient-primary); padding: 0.2rem 0.6rem; border-radius: 20px; font-weight: 700; text-transform: uppercase; }
+
+    /* ==========================================
+       5. HERO SECTION & CATEGORIES
+       ========================================== */
+    .hero { text-align: center; padding: 5rem 1rem 3rem 1rem; }
+    .hero h1 { font-size: 3rem; font-weight: 800; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1px; }
+    .hero-btn { background: var(--gradient-primary); color: #fff; padding: 0.9rem 2.5rem; border-radius: 30px; font-weight: 700; font-size: 1.1rem; border: none; cursor: pointer; box-shadow: 0 4px 20px rgba(236,72,153,0.4); transition: opacity 0.2s; }
+    .hero-btn:hover { opacity: 0.9; }
+
+    .section-title { font-size: 2rem; font-weight: 800; text-transform: uppercase; text-align: center; margin: 3rem 0 2rem 0; }
+    .categories-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 4rem; }
+    .cat-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden; text-align: center; transition: transform 0.3s, border-color 0.3s; display: block; }
+    .cat-card:hover { transform: translateY(-6px); border-color: var(--accent-pink); box-shadow: 0 10px 30px rgba(236, 72, 153, 0.2); }
+    .cat-img { height: 220px; width: 100%; object-fit: cover; }
+    .cat-info { padding: 1.5rem; }
+    .cat-info h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .cat-info p { color: var(--text-gray); font-size: 0.9rem; }
+
+    footer { padding: 3rem 0; background: #050505; text-align: center; color: var(--text-gray); border-top: 1px solid var(--border-color); margin-top: 4rem; }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR HEADER -->
+  <header>
+    <div class="container navbar">
+      <a href="index.html" class="logo gradient-text">MD</a>
+
+      <ul class="desktop-nav">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="products.html">All Products</a></li>
+        <li><a href="clothes.html">Streetwear</a></li>
+        <li><a href="cosplay.html">Costumes</a></li>
+        <li><a href="gta6.html">GTA VI</a></li>
+        <li><a href="playstation5.html">PS5</a></li>
+      </ul>
+
+      <div class="nav-right-actions">
+        <button class="search-trigger-btn" onclick="openSearchModal()"><i class="fa-solid fa-magnifying-glass"></i> Search</button>
+        <a href="cart.html" class="cart-btn-link" title="Cart">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="cart-badge" id="cartBadgeCount">0</span>
+        </a>
+        <button class="hamburger-trigger" onclick="openMenuOverlay()"><i class="fa-solid fa-bars"></i></button>
+      </div>
+    </div>
+  </header>
+
+  <!-- FULLSCREEN MENU OVERLAY -->
+  <div class="full-menu-overlay" id="fullMenuOverlay">
+    <div class="overlay-header">
+      <a href="index.html" class="logo gradient-text">MD</a>
+      <button class="overlay-close-btn" onclick="closeMenuOverlay()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <ul class="overlay-links-container">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="products.html">All Products</a></li>
+      <li><a href="clothes.html">Streetwear & Clothes</a></li>
+      <li><a href="cosplay.html">Costumes & Anime Gear</a></li>
+      <li><a href="gta6.html">GTA VI Drop</a></li>
+      <li><a href="playstation5.html">PlayStation 5</a></li>
+      <li><a href="cart.html">View Cart</a></li>
+    </ul>
+    <div></div>
+  </div>
+
+  <!-- GOOGLE-STYLE SEARCH ENGINE MODAL -->
+  <div class="search-modal" id="searchModal">
+    <div style="display: flex; justify-content: flex-end; padding: 1rem;">
+      <button class="overlay-close-btn" onclick="closeSearchModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="search-bar-wrap">
+      <i class="fa-solid fa-magnifying-glass" style="color: var(--accent-pink); font-size: 1.2rem;"></i>
+      <input type="text" id="liveSearchInput" placeholder="Search GTA6, Streetwear, Costumes, PS5, Spiderman, Posters..." oninput="filterSearchSuggestions()">
+    </div>
+    <div class="search-results-box" id="searchResultsContainer">
+      <!-- Populated dynamically by JavaScript -->
+    </div>
+  </div>
+
+  <!-- MAIN HERO SECTION -->
+  <main class="container">
+    <section class="hero">
+      <h1 class="gradient-text">THE HOME OF MERCHANDISE</h1>
+      <a href="products.html"><button class="hero-btn">SHOP NOW</button></a>
+    </section>
+
+    <h2 class="section-title">TOP <span class="gradient-text">CATEGORIES</span></h2>
+
+    <div class="categories-grid">
+      <a href="gta6.html" class="cat-card">
+        <img src="https://upload.wikimedia.org/wikipedia/en/a/a5/Grand_Theft_Auto_VI_cover_art.jpg" alt="GTA VI" class="cat-img">
+        <div class="cat-info">
+          <h3>GTA VI Pre-Order</h3>
+          <p>Collector's Box, Steelbooks & Merch</p>
+        </div>
+      </a>
+
+      <a href="clothes.html" class="cat-card">
+        <img src="https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=600&q=80" alt="Streetwear" class="cat-img">
+        <div class="cat-info">
+          <h3>Streetwear & Apparel</h3>
+          <p>Baggy Jeans, Cuban Chains, Seiko Watch, Ties & Jordans</p>
+        </div>
+      </a>
+
+      <a href="cosplay.html" class="cat-card">
+        <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=600&q=80" alt="Costumes" class="cat-img">
+        <div class="cat-info">
+          <h3>Costumes & Cosplay</h3>
+          <p>Spiderman, Goku, Akatsuki, Outfits & 20+ Anime Posters</p>
+        </div>
+      </a>
+
+      <a href="playstation5.html" class="cat-card">
+        <img src="https://images.unsplash.com/photo-1606813907291-d86efa9b94db?auto=format&fit=crop&w=600&q=80" alt="PlayStation 5" class="cat-img">
+        <div class="cat-info">
+          <h3>PlayStation 5</h3>
+          <p>Disc & Digital Consoles, Controllers & Headsets</p>
+        </div>
+      </a>
+    </div>
+  </main>
+
+  <footer>
+    <div class="gradient-text" style="font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem;">MD</div>
+    <p>&copy; 2026 MD Merchandise Store. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const menuOverlay = document.getElementById('fullMenuOverlay');
+    const searchModal = document.getElementById('searchModal');
+
+    function openMenuOverlay() { menuOverlay.classList.add('active'); }
+    function closeMenuOverlay() { menuOverlay.classList.remove('active'); }
+    function openSearchModal() { searchModal.classList.add('active'); document.getElementById('liveSearchInput').focus(); renderSearchItems(''); }
+    function closeSearchModal() { searchModal.classList.remove('active'); }
+
+    // Google-style search indexing pointing to exact pages and anchors
+    const searchDatabase = [
+      { name: "GTA VI (Collector's Edition)", category: "GTA6", url: "gta6.html#gta6-collector" },
+      { name: "GTA VI Deluxe Steelbook Case", category: "GTA6", url: "gta6.html#gta6-steelbook" },
+      { name: "Vice City Neon Snapback", category: "GTA6", url: "gta6.html#gta6-hat" },
+      { name: "PlayStation 5 Console (Disc Edition)", category: "PS5", url: "playstation5.html#ps5-disc" },
+      { name: "PlayStation 5 Digital Edition", category: "PS5", url: "playstation5.html#ps5-digital" },
+      { name: "DualSense Edge Controller", category: "PS5", url: "playstation5.html#dualsense-edge" },
+      { name: "Pulse 3D Wireless Headset", category: "PS5", url: "playstation5.html#pulse-headset" },
+      { name: "Vintage Raw Cut Baggy Jeans", category: "Clothes", url: "clothes.html#baggy-jeans" },
+      { name: "18K Gold Cuban Link Chain", category: "Clothes", url: "clothes.html#cuban-chain" },
+      { name: "Seiko 5 Automatic Emerald Watch", category: "Clothes", url: "clothes.html#luxury-watch" },
+      { name: "Heavyweight Knit Cardigan", category: "Clothes", url: "clothes.html#cardigan" },
+      { name: "Midnight Slim Silk Black Tie", category: "Clothes", url: "clothes.html#black-tie" },
+      { name: "Crimson Premium Red Silk Tie", category: "Clothes", url: "clothes.html#red-tie" },
+      { name: "New York NY Fitted Cap", category: "Clothes", url: "clothes.html#ny-cap" },
+      { name: "Cyber Chunky Streetwear Sneakers", category: "Clothes", url: "clothes.html#sneakers" },
+      { name: "Air Jordan 4 Retro Black Cat", category: "Clothes", url: "clothes.html#jordans" },
+      { name: "Full Spiderman Bodysuit & Mask", category: "Costumes", url: "cosplay.html#spiderman" },
+      { name: "Goku Turtle Hermit Gi Outfit", category: "Costumes", url: "cosplay.html#goku" },
+      { name: "Akatsuki Cloud Cloak Set", category: "Costumes", url: "cosplay.html#akatsuki" },
+      { name: "Thanos Infinity Gauntlet LED", category: "Costumes", url: "cosplay.html#thanos-gauntlet" },
+      { name: "Naruto Uzumaki Tracksuit Outfit", category: "Costumes", url: "cosplay.html#naruto-outfit" },
+      { name: "Hidden Leaf Metal Ninja Headband", category: "Costumes", url: "cosplay.html#naruto-headband" },
+      { name: "Jujutsu High Uniform", category: "Costumes", url: "cosplay.html#jjk-uniform" },
+      { name: "Toji Fushiguro Fit", category: "Costumes", url: "cosplay.html#toji-outfit" },
+      { name: "Luffy Red Vest & Straw Hat", category: "Costumes", url: "cosplay.html#luffy-outfit" },
+      { name: "Straw Hat Jolly Roger Flag", category: "Costumes", url: "cosplay.html#strawhat-flag" },
+      { name: "Naruto Sage Mode vs Pain Poster", category: "Posters", url: "cosplay.html#poster-naruto-pain" },
+      { name: "Madara Uchiha Susanoo Poster", category: "Posters", url: "cosplay.html#poster-madara" },
+      { name: "Luffy Gear 5 Sun God Nika Poster", category: "Posters", url: "cosplay.html#poster-onepiece" },
+      { name: "Satoru Gojo Unlimited Void Poster", category: "Posters", url: "cosplay.html#poster-gojo" },
+      { name: "Ryomen Sukuna Malevolent Shrine Poster", category: "Posters", url: "cosplay.html#poster-sukuna" },
+      { name: "Awakened Yuji Itadori Poster", category: "Posters", url: "cosplay.html#poster-yuji" },
+      { name: "Eren Attack Titan Poster", category: "Posters", url: "cosplay.html#poster-aot-eren" },
+      { name: "Colossal Titan Wall Breach Poster", category: "Posters", url: "cosplay.html#poster-aot-colossal" },
+      { name: "Kokushibo Upper Moon One Poster", category: "Posters", url: "cosplay.html#poster-kokushibo" },
+      { name: "Akaza Upper 3 Poster", category: "Posters", url: "cosplay.html#poster-akaza" },
+      { name: "Muzan Kibutsuji Final Form Poster", category: "Posters", url: "cosplay.html#poster-muzan" }
+    ];
+    function renderSearchItems(query) {
+      const container = document.getElementById('searchResultsContainer');
+      const filtered = searchDatabase.filter(item => 
+        item.name.toLowerCase().includes(query.toLowerCase()) || 
+        item.category.toLowerCase().includes(query.toLowerCase())
+      );
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div style="padding: 1.5rem; text-align: center; color: var(--text-gray);">No matches found. Try "GTA6", "Gojo", "Jeans", or "PS5".</div>`;
+        return;
+      }
+
+      let html = '';
+      filtered.forEach(item => {
+        html += `
+          <div class="search-suggestion-item" onclick="window.location.href='${item.url}'">
+            <span><i class="fa-solid fa-arrow-turn-down" style="transform: rotate(90deg); margin-right: 10px; color: var(--accent-pink);"></i> ${item.name}</span>
+            <span class="suggestion-category">${item.category}</span>
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+    }
+
+    function filterSearchSuggestions() {
+      const query = document.getElementById('liveSearchInput').value;
+      renderSearchItems(query);
+    }
+
+    function updateCartBadge() {
+      let cart = JSON.parse(localStorage.getItem('md_cart') || '[]');
+      const badge = document.getElementById('cartBadgeCount');
+      if (badge) badge.textContent = cart.length;
+    }
+    window.onload = updateCartBadge;
+  </script>
+</body>
+</html>

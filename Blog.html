@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MD - Blogs & Culture</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #0d0d0d;
+      --card-bg: #181818;
+      --pink: #ec4899;
+      --purple: #a855f7;
+      --gradient: linear-gradient(135deg, #ec4899, #a855f7);
+      --border: #27272a;
+      --text: #ffffff;
+      --gray: #a1a1aa;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins'; }
+    body { background: var(--bg); color: var(--text); padding-bottom: 3rem; }
+    a { color: inherit; text-decoration: none; }
+
+    .gradient-text {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    header {
+      background: #121212;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 9999;
+    }
+
+    .navbar {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+      position: relative;
+    }
+
+    .logo { font-size: 1.8rem; font-weight: 800; }
+
+    .nav-menu {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-menu a { font-weight: 600; }
+    .nav-menu a:hover, .nav-menu a.active { color: var(--pink); }
+
+    .hamburger-icon {
+      display: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+      color: #fff;
+    }
+
+    @media (max-width: 768px) {
+      .hamburger-icon { display: block; }
+
+      .nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: #141414;
+        border-bottom: 2px solid var(--pink);
+        flex-direction: column;
+        padding: 1.5rem;
+        gap: 1.2rem;
+      }
+
+      .nav-menu.open { display: flex !important; }
+
+      .nav-menu li {
+        width: 100%;
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 0.5rem;
+      }
+    }
+
+    .container { width: 90%; max-width: 1200px; margin: 2rem auto; }
+    .title { text-align: center; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 2.2rem; }
+    .subtitle { text-align: center; color: var(--gray); margin-bottom: 3rem; }
+
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .blog-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+
+    .blog-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--purple);
+    }
+
+    .blog-card img { width: 100%; height: 200px; object-fit: cover; }
+    .blog-content { padding: 1.5rem; }
+
+    .blog-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .blog-title { font-size: 1.25rem; font-weight: 700; margin: 0.6rem 0; }
+    .blog-desc { color: var(--gray); font-size: 0.95rem; margin-bottom: 1.2rem; }
+
+    .read-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      color: var(--pink);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2.5rem 0;
+      border-top: 1px solid var(--border);
+      margin-top: 4rem;
+      color: var(--gray);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="navbar">
+      <a href="index.html" class="logo gradient-text">MD</a>
+
+      <div class="hamburger-icon" onclick="toggleMenu()">
+        <i class="fa-solid fa-bars" id="menuBtnIcon"></i>
+      </div>
+
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="products.html">Products</a></li>
+        <li><a href="Blogs.html" class="active">Blogs</a></li>
+        <li><a href="cart.html">Cart</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1 class="title">LATEST <span class="gradient-text">BLOGS</span></h1>
+    <p class="subtitle">Explore the Bubble: Gaming, Perfumes, Streetwear & Style</p>
+
+    <div class="blog-grid">
+      
+      <!-- Blog 1 -->
+      <article class="blog-card">
+        <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80" alt="Perfume">
+        <div class="blog-content">
+          <span class="blog-tag gradient-text">GROOMING</span>
+          <h2 class="blog-title">Best Long-Lasting Perfumes for Men in 2026</h2>
+          <p class="blog-desc">Upgrade your daily scent rotation with top Oud and citrus fragrance notes that project all day.</p>
+          <a href="#" class="read-btn">Read Article <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+      </article>
+
+      <!-- Blog 2 -->
+      <article class="blog-card">
+        <img src="https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=600&q=80" alt="Women Perfume">
+        <div class="blog-content">
+          <span class="blog-tag gradient-text">FRAGRANCE</span>
+          <h2 class="blog-title">Best Signature Perfumes for Women</h2>
+          <p class="blog-desc">A deep dive into luxury floral, sweet vanilla, and velvet rose scents built for every occasion.</p>
+          <a href="#" class="read-btn">Read Article <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+      </article>
+
+      <!-- Blog 3 -->
+      <article class="blog-card">
+        <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=600&q=80" alt="Streetwear Guide">
+        <div class="blog-content">
+          <span class="blog-tag gradient-text">STYLE GUIDE</span>
+          <h2 class="blog-title">How to Dress: Baggy Fits & Proportions</h2>
+          <p class="blog-excerpt blog-desc">Master streetwear proportions, baggy denim styling, heavyweight hoodies, and layering accessories.</p>
+          <a href="#" class="read-btn">Read Article <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+      </article>
+
+      <!-- Blog 4 -->
+      <article class="blog-card">
+        <img src="gta6fan.jpg" alt="GTA VI">
+        <div class="blog-content">
+          <span class="blog-tag gradient-text">GAMING</span>
+          <h2 class="blog-title">Everything We Know About GTA VI</h2>
+          <p class="blog-desc">Breakdown of Vice City graphics, map scale, character lore, pre-order bonuses, and next-gen hardware support.</p>
+          <a href="#" class="read-btn">Read Article <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+      </article>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="gradient-text" style="font-size: 1.8rem; font-weight: 800; margin-bottom:0.5rem;">MD</div>
+    <p>&copy; 2026 MD Merchandise & Tech Store. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('navMenu');
+      const icon = document.getElementById('menuBtnIcon');
+      menu.classList.toggle('open');
+      icon.className = menu.classList.contains('open') ? 'fa-solid fa-xmark' : 'fa-solid fa-bars';
+    }
+  </script>
+</body>
+</html>
